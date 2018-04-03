@@ -29,11 +29,25 @@ In Drole \cite{Drole2017}
 
 \section{Related Work}
 \label{relatedwork}
+The early ideas of inductive logic programming (ILP) can be tied back to Gordon Plotkin's thesis (1971) on ``Automatic methods of inductive inference". The thesis explores an incremental algorithm for solving model inference problems, which are similar to problems in ILP. In his thesis, Plotkin develops a bottom-up generalization strategy called Relative least general generalizations (rlggs). This generalization was then built upon later.
 
-\section{ILP Background}
+Stephen Muggleton, who Drole and Kononenko reference often, later entered the field. The paper ``Inductive Logic Programming" (1991) develops the concept of logic programming with machine learning, which is the foundation for this subfield. Muggleton from then on became one of the staples for the ILP field and as a result is referenced often by Drole and Kononeko. 
+
+Muggleton continued on to develop both ProGolem and Asymmetric Relative Minimal Generalisations (ARMGs) \cite{ProGolem}. ProGolem is a framework written in Prolog for constructing bottom-clauses with Golem. Golem is a technique for constructing relative least general generalisations (rlggs) in an efficient way in order to conduct a search for a generalization that lead to a working hypothesis \cite{1990}. 
+
+ARMG, as described by the authors, provides a bottom up approach to generalization without exponential growth of the size of the generalization. In bottom up approaches, this exponential growth of generalization size is one of the key hindrances of the approach. ARMG allowed for the bottom-up approach to be more viable. 
+
+% Speak about saturation somewhere 
+
+
+
+\section{Inductive Logic Programming}
 \label{background}
+Logic programming is a paradigm for programming that has its foundation in formal logic. 
+Logic Programming is a way in which concepts can be represented using a logical programming language to convey background knowledge, examples, and hypotheses. 
 
 
+\section{Pairwise Saturation}
 
 \vskip 0.2in
 \bibliography{PaperSummary}
