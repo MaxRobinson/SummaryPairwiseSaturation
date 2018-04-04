@@ -2,13 +2,14 @@
 \usepackage{jair, theapa, rawfonts, amssymb}
 
 %\jairheading{1}{2018}{}{}{}
-\ShortHeadings{A Summary of Pairwise Saturations in ILP}
-{Robinson}
+%\ShortHeadings{A Summary of Pairwise Saturations in ILP}
+%{Robinson}
 \firstpageno{1}
 
 \begin{document}
 
 \title{A Summary of ``Pairwise saturations in inductive logic programming''}
+
 
 \author{\name Max Robinson \email max.robinson@jhu.edu \\
        \addr Johns Hopkins University,\\
@@ -16,7 +17,7 @@
    }
 
 % For research notes, remove the comment character in the line below.
-% \researchnote
+%\researchnote APril3 
 
 \maketitle
 
@@ -26,14 +27,19 @@
 
 \section{Introduction}
 \label{Introduction}
+Inductive logic programming (ILP) (1991) is a subdomain of machine learning first developed explored in 1971 \cite{Plokin}. ILP deal a lot with concept learning. In other words, the goal is to generate a hypothesis or a concept given a set of positive examples, negative examples, and a set of background knowledge. The hypothesis is described in a logical program using the predicates in the background knowledge. The goal of the hypothesis is to be true for all positive examples and false for all negative example. 
+
+One large appeal for the use of ILP is that all data used to generate a solution, and the solution are all human readable. All pieces follow the typical logical programming paradigm. This makes it easier to encode domain-specific knowledge and to check that a solution produced makes sense if checked by domain experts. An unfortunate downside to ILP are the long run times typically associated with finding a solutions. 
+
+In the paper ``Pairwise saturation in inductive logic programming" \cite{Drole2017}, the authors explore a technique for reducing the running time of systems that use asymmetric relative minimal generalizations (ARMG) (Muggleton et al. 2010) called pairwise saturation. With Pairwise saturation, the authors explore analyzing the bottom clauses of examples with the goal of removing literals that can be identified as not being part of the ARMG of the example. The removing of literals prior to computing the ARMG aims to reduce the run time of calculating hypotheses.
 
 \section{Related Work}
 \label{relatedwork}
 The early ideas of inductive logic programming (ILP) can be tied back to Gordon Plotkin's thesis (1971) on ``Automatic methods of inductive inference". The thesis explores an incremental algorithm for solving model inference problems, which are similar to problems in ILP. In his thesis, Plotkin develops a bottom-up generalization strategy called Relative least general generalizations (rlggs). This generalization was then built upon later.
 
-Stephen Muggleton, who Drole and Kononenko reference often, later entered the field. The paper ``Inductive Logic Programming" (1991) develops the concept of logic programming with machine learning, which is the foundation for this subfield. Muggleton from then on became one of the staples for the ILP field and as a result is referenced often by Drole and Kononeko. 
+Stephen Muggleton, who Drole and Kononenko reference often, later entered the field. Muggleton (1994) developed the concept of logic programming with machine learning, which is the foundation for this subfield. Muggleton from then on became one of the staples for the ILP field and as a result is referenced often by Drole and Kononeko. 
 
-Muggleton continued on to develop both ProGolem and Asymmetric Relative Minimal Generalisations (ARMGs) \cite{ProGolem}. ProGolem is a framework written in Prolog for constructing bottom-clauses with Golem. Golem is a technique for constructing relative least general generalisations (rlggs) in an efficient way in order to conduct a search for a generalization that lead to a working hypothesis \cite{1990}. 
+Muggleton continued on to develop both ProGolem and Asymmetric Relative Minimal Generalisations (ARMGs) \cite{ProGolem}. ProGolem is a framework written in Prolog for constructing bottom-clauses with Golem. Golem is a technique for constructing relative least general generalisations (rlggs) in an efficient way in order to conduct a search for a generalization that lead to a working hypothesis \cite{Golem}. 
 
 ARMG, as described by the authors, provides a bottom up approach to generalization without exponential growth of the size of the generalization. In bottom up approaches, this exponential growth of generalization size is one of the key hindrances of the approach. ARMG allowed for the bottom-up approach to be more viable. 
 
@@ -115,6 +121,25 @@ Finally the entire pairwise saturation algorithm is analyzed. For pairwise satur
 Notice that the time to load the data into the cache is not included in the calculation for run complexity calculation for pairwise saturation. This shows that it is a small part, considered to almost be preprocessing, but provides large benefits, as shown in the results.
 
 \section{Analysis and Discussion of Results}
+The authors main goal was to show if the addition of pairwise saturation to the ProGolem speeds up the rate at which hypothesis are found with minimal loss to accuracy. The authors used three metrics to characterize their results: achieved accuracy, time needed to arrive at solution, and the size of the bottom clause which was used as the basis for the solution. Note, no configuration, computer, load, OS, or other details about the system on which the experiments were run was provided. 
+
+A comparison for results is made between ProGolem, ProGolem with n-wise saturation for n between 2 and 5 called ProParGolem, and ProGolem with caching of the bottom clause. The experiments used "real-world" datasets which come from different chemical domains. Data for eleven chemicals were used in the experiments. The goal is to predict the effects of the different compounds in different domains. The authors only reference the dataset through a url, http://www.doc.ic.ac.uk/jcs06/GILPS/ datasets.tar.bz2, which is now defunct. Experiments are performed in general by using 10x tenfold cross validation except in special cases due to data size.
+
+The experiments reported average run time to produce a hypothesis and the accuracy of the hypothesis each with standard deviations, showing ProGolem being significantly slower than ProParGolem. The authors claim no significant difference between ProParGolem with n=2 and ProGolem. However, their claims are left to the reader to analyze the data in the table provided.
+
+The authors then compare the ratio of time taken above ProParGolem where n=2, for ProGolem and ProGolemCaching. The authors conclude that caching creates an average speed up of 1.22 and caching plus pairwise saturation has a 1.36 times speed up on average. No detailed information about standard deviations is provided. 
+
+Comparison of the average length of the clause used to generate further hypotheses from shows that typically for more $n$ used in n-wise saturation, the length of the clause submitted decreases. This is correlated by the authors with a decrease in the run time taken as $n$ increased. 
+
+The paper concludes by claiming that an algorithm for reducing the size of the initial hypothesis in a system using ARGM has been shown. Pairwise saturation is explained to lead to faster induction because the solution is dependent on the size of the initial clause for generalization. In addition, it is noted that for the datasets that the additional time needed to compute the pairwise saturation does not exceed the time gained due to a shorter saturation. 
+
+The experiments run showed primarily metrics for the amount of time taken for each algorithm to run, on average. In addition to not providing information about the system on which the experiments were run, the authors spend their detailed comparison between ProGolem and ProParGolem. This makes it more difficult to understand what the role of caching had in overall performance and made the comparison seem stilted. Individual data points were also lightly analyzed, and the average times were used to highlight the desired results. There were few mentions of the data points which showed that there was little to no difference between ProGolemCaching and ProParGolem. 
+
+Little analysis was done on separating the running time taken for pairwise saturation and the amount of time then taken by the rest of the ProGolem algorithm. While this is not strictly necessary, it would have provided two important data points. One would be to show experimentally that the time complexity for pairwise saturation was correct. Second, the authors could then have done an analysis of exactly how much a smaller initial clause effected the time needed to construct a hypothesis. The experiments show that a smaller clause is important to run time, but they do not show how much. As stated by the authors it is clearly enough to offset the time it takes to run the pairwise saturation. 
+
+The author's claims that they have developed a system that decreases the runtime to find a hypotheses using ARMG, are loosely founded. The experiments show that for their particular system, whatever it may have been, that they were able to improve run times. The ability to reproduce these results seem shaky. Producing an algorithm that will produce shorter bottom clauses from which ARMG can then run was well developed. The proof and constraints created by the authors show that there is the ability to apply n-wise saturation to decrease the size of the bottom clause. 
+
+Ultimately, pairwise saturation looks to be a promising algorithm. The choice in runtime as a metric seems well intentioned by misguided and poorly executed. The foundation of the algorithm was built well, however. Pairwise saturation provides an interesting staring point for continued research into bottom clause size reduction, and its effects. 
 
 
 \vskip 0.2in
